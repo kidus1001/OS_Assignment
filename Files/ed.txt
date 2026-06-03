@@ -1,2 +1,0 @@
-Shift: 21, Direction: left
-Pnizx
