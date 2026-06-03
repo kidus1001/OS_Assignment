@@ -14,7 +14,6 @@
 7. [Algorithm Flowcharts](#algorithm-flowcharts)
 8. [File Structure](#file-structure)
 9. [Code Explanation](#code-explanation)
-10. [Authors](#authors)
 
 ---
 
@@ -127,8 +126,7 @@ This repository uses simple, linear algorithms; below are compact flow descripti
 	1. Receive ciphertext
 	2. For shift = 1..25, apply reverse shift and collect candidate plaintext
 	3. Present candidates to user for selection
-
-If you want visual PNG/SVG flowcharts, add images to a `docs/` folder and reference them here (e.g., `docs/auth-flow.png`).
+ 4. 
 
 ## 📁 File Structure
 
@@ -144,7 +142,6 @@ Files/               # saved ciphertext files and sample inputs
 		vmHate.txt
 ```
 
-Add any additional configuration or example files here. The program will create the `Files/` folder if it does not exist.
 
 ## 🧩 Code Explanation
 
@@ -165,16 +162,5 @@ Edge cases handled:
 - Non-letter characters are preserved
 - Shift values outside 1–25 are rejected with an instruction to provide a valid key
 
-## ✍️ Authors
-
-- kidus1001 — primary author (GitHub: `kidus1001`)
-
-If this was a group assignment, add the other team members below in the same format (Name — role / contact). You can also include institution and course details.
-
 ---
-
-If you'd like, I can also:
-- Add small example screenshots showing the program menu
-- Generate simple flowchart PNGs and add them under `docs/`
-- Expand the `Code Explanation` with function-level docs pulled from the source files
 
