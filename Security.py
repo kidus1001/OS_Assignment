@@ -244,10 +244,10 @@ while isAuthenticated == False:
                 input()
             
             elif option == "7":
-                while True and currentuser is not None:
+                while currentuser is not None:
                     helper_clear_screen()
-                    option = input ("Settings:\n1. Change Password\n2. Logout\n3. Back to Menu\nEnter your choice: ")
-                    if option == "1":
+                    setting_choice = input ("Settings:\n1. Change Password\n2. Logout\n3. Back to Menu\nEnter your choice: ")
+                    if setting_choice == "1":
                         new_password = getpass.getpass("Enter your new password: ")
                         if hashlib.sha256(new_password.encode()).hexdigest() == users[currentuser]:
                             print ("New password cannot be the same as the old password! Try Again!")
@@ -266,7 +266,7 @@ while isAuthenticated == False:
                         auditLog.append("Time: " + str(datetime.now()) + " - - - Password changed for user: " + currentuser)
                         print ("Click 'Enter' to continue... ")
                         input()
-                    elif option == "2":
+                    elif setting_choice == "2":
                         helper_clear_screen()
                         print ("Logging out. Goodbye, " + currentuser + "!")
                         auditLog.append("Time: " + str(datetime.now()) + " - - - User logged out: " + currentuser)
@@ -274,7 +274,7 @@ while isAuthenticated == False:
                         currentuser = None
                         print ("Click 'Enter' to continue... ")
                         input()
-                    elif option == "3":
+                    elif setting_choice == "3":
                         break
                     
             elif option == "8":
