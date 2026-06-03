@@ -1,6 +1,8 @@
 import os
 import random
 from datetime import datetime
+import hashlib
+import getpass
 
 alphabet = {0:"A", 1:"B", 2:"C", 3:"D", 4:"E", 5:"F", 6:"G", 7:"H", 8:"I", 9:"J", 10:"K", 11:"L", 12:"M", 13:"N", 14:"O", 15:"P", 16:"Q",
             17:"R", 18:"S", 19:"T", 20:"U", 21:"V", 22:"W", 23:"X", 24:"Y", 25:"Z"}
@@ -117,9 +119,9 @@ while isAuthenticated == False:
         if username in users:
             print ("Username already exists! Try Again!")
         else:
-            print ("Enter your password: ", end="")
-            password = input ()
-            users[username] = password
+            password = getpass.getpass("Enter your password: ")
+            password_hash = hashlib.sha256(password.encode()).hexdigest()
+            users[username] = password_hash
             print ("Account created successfully!")
             auditLog.append("Time: " + str(datetime.now()) + " - - - Account created for user: " + username)
         print ("Click 'Enter' to continue... ")
@@ -132,9 +134,8 @@ while isAuthenticated == False:
         
         print ("Username: ", end="")
         username = input()
-        print ("Password: ", end="")
-        password = input()
-        if username in users and users[username] == password:
+        password = getpass.getpass("Password: ")
+        if username in users and users[username] == hashlib.sha256(password.encode()).hexdigest():
             print ("Login successful! Welcome, " + username + "!")
             auditLog.append("Time: " + str(datetime.now()) + " - - - User logged in: " + username)
             isAuthenticated = True
@@ -154,7 +155,7 @@ while isAuthenticated == False:
             print("4. Save Encrypted Message to File")
             print("5. Load and Decrypt File")
             print("6. View Security Audit Log")
-            print("7. Logout")
+            print("7. Settings")
             print("8. Exit")
             print ("=" * 40)
             print ("Enter a number to select an option: ", end="")
@@ -237,14 +238,27 @@ while isAuthenticated == False:
                 input()
             
             elif option == "7":
-                helper_clear_screen()
-                print ("Logging out. Goodbye, " + currentuser + "!")
-                auditLog.append("Time: " + str(datetime.now()) + " - - - User logged out: " + currentuser)
-                isAuthenticated = False
-                currentuser = None
-                print ("Click 'Enter' to continue... ")
-                input()
-                
+                while True and currentuser is not None:
+                    helper_clear_screen()
+                    option = input ("Settings:\n1. Change Password\n2. Logout\n3. Back to Menu\nEnter your choice: ")
+                    if option == "1":
+                        new_password = getpass.getpass("Enter your new password: ")
+                        users[currentuser] = hashlib.sha256(new_password.encode()).hexdigest()
+                        print ("Password changed successfully!")
+                        auditLog.append("Time: " + str(datetime.now()) + " - - - Password changed for user: " + currentuser)
+                        print ("Click 'Enter' to continue... ")
+                        input()
+                    elif option == "2":
+                        helper_clear_screen()
+                        print ("Logging out. Goodbye, " + currentuser + "!")
+                        auditLog.append("Time: " + str(datetime.now()) + " - - - User logged out: " + currentuser)
+                        isAuthenticated = False
+                        currentuser = None
+                        print ("Click 'Enter' to continue... ")
+                        input()
+                    elif option == "3":
+                        break
+                    
             elif option == "8":
                 helper_clear_screen()
                 print ("Exiting the system. Goodbye!")
