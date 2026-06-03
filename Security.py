@@ -29,25 +29,25 @@ def helper_clear_screen ():
 
 def encrypt_message (text, numberOfShifts, direction):
     encrypted_message = ""
-    upper=True
-    for char in text:
-        if char != char.upper():
-            upper=False
-        char = char.upper()
-        if char in alphabet.values():
-            key = helperGetKey(char)
+    for ch in text:
+        if ch.upper() in alphabet.values():
             if direction == "right":
-                new_Key = (key + numberOfShifts) % 26
+                ePos = (helperGetKey(ch.upper()) + numberOfShifts) % 26
             else:
-                new_Key = (key - numberOfShifts) % 26
-            if upper:
-                encrypted_message += alphabet[new_Key]
+                ePos = (helperGetKey(ch.upper()) - numberOfShifts) % 26
+            cap = ""
+            if ch.upper() == ch:
+                cap = "Upper"
+            else:                
+                cap = "Lower"
+            if cap == "Upper":
+                encrypted_message += alphabet[ePos].upper()
             else:
-                encrypted_message += alphabet[new_Key].lower()
+                encrypted_message += alphabet[ePos].lower()
         else:
-            encrypted_message += char
+            encrypted_message += ch
     return encrypted_message
-            
+
 def decrypt_all (text):
     for shifts in range (1, 26):
         decryptedText = ""
@@ -120,6 +120,12 @@ while isAuthenticated == False:
             print ("Username already exists! Try Again!")
         else:
             password = getpass.getpass("Enter your password: ")
+            confirmPassword = getpass.getpass("Confirm your password: ")
+            if password != confirmPassword:
+                print ("Passwords do not match! Try Again!")
+                print ("Click 'Enter' to continue... ")
+                input()
+                continue
             password_hash = hashlib.sha256(password.encode()).hexdigest()
             users[username] = password_hash
             print ("Account created successfully!")
@@ -243,6 +249,18 @@ while isAuthenticated == False:
                     option = input ("Settings:\n1. Change Password\n2. Logout\n3. Back to Menu\nEnter your choice: ")
                     if option == "1":
                         new_password = getpass.getpass("Enter your new password: ")
+                        if hashlib.sha256(new_password.encode()).hexdigest() == users[currentuser]:
+                            print ("New password cannot be the same as the old password! Try Again!")
+                            print ("Click 'Enter' to continue... ")
+                            input()
+                            continue
+                        confirmPassword = getpass.getpass("Confirm your password: ")
+                        if new_password != confirmPassword:
+                            print ("Passwords do not match! Try Again!")
+                            print ("Click 'Enter' to continue... ")
+                            input()
+                            continue
+                        
                         users[currentuser] = hashlib.sha256(new_password.encode()).hexdigest()
                         print ("Password changed successfully!")
                         auditLog.append("Time: " + str(datetime.now()) + " - - - Password changed for user: " + currentuser)
